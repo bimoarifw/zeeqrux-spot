@@ -81,16 +81,41 @@
             font-size: 1.2em;
             text-align: center;
         }
+
         #player-time {
             position: absolute;
             bottom: 5px;
             left: 5px;
             font-size: 1.1em;
             color: #fff;
-            z-index: 2; /* Add higher z-index value for player-time */
+            z-index: 2;
         }
 
-        /* Responsive styles */
+        @keyframes glowing {
+            0% {
+                text-shadow: 0 0 5px #fff;
+            }
+
+            50% {
+                text-shadow: 0 0 20px #fff;
+            }
+
+            100% {
+                text-shadow: 0 0 5px #fff;
+            }
+        }
+
+        #player-status {
+            animation: glowing 2s linear infinite;
+        }
+
+        .typewriter-text {
+            font-family: monospace;
+            font-size: 24px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
         @media screen and (max-width: 600px) {
             .card {
                 max-width: 300px;
@@ -116,13 +141,16 @@
                 <div id="player-time"></div>
             </div>
             <div class="card-body">
-                <div id="player-status"></div>
+                <div>
+                    <div id="player-status"></div> <span class="typewriter-text" id="typewriter"></span>
+                </div>
                 <h5 class="card-title" id="player-song">Song Title</h5>
                 <p class="card-text" id="player-artist">Artist Name</p>
             </div>
         </div>
     </div>
     <script>
+
         var songData, progressSeconds, totalSeconds, progressInterval, serviceHost = "https://spot.bimoarifw.workers.dev", spotifyUser = "bimoarifw";
         function updatePlayer() {
             fetch(`${serviceHost}/get-now-playing`)
