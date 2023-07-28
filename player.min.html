@@ -81,6 +81,14 @@
             font-size: 1.2em;
             text-align: center;
         }
+        #player-time {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            font-size: 1.1em;
+            color: #fff;
+            z-index: 2; /* Add higher z-index value for player-time */
+        }
 
         /* Responsive styles */
         @media screen and (max-width: 600px) {
@@ -105,6 +113,7 @@
         <div class="card">
             <div class="cardimg">
                 <img id="player-album-art" src="https://via.placeholder.com/200" alt="Album Art">
+                <div id="player-time"></div>
             </div>
             <div class="card-body">
                 <div id="player-status"></div>
@@ -128,21 +137,10 @@
                     document.getElementById("player-artist").innerHTML = e.item.artists[0].name;
                     document.getElementById("player-status").innerHTML = e.is_playing ? `▶️ ${spotifyUser}'s now playing...` : `⏸ ${spotifyUser} has paused.`;
                     document.getElementById("player-album-art").setAttribute("src", e.item.album.images[1].url);
-                    document.getElementById("player-progress").setAttribute("style", document.getElementById("player-progress").getAttribute("style") + `width: ${100 * e.progress_ms / e.item.duration_ms}%`);
-                    document.getElementById("player-background").style.backgroundImage = `url(${e.item.album.images[1].url})`;
-                    document.getElementById("player-song-link").setAttribute("href", e.item.external_urls.spotify);
-                    document.getElementById("player-artist-link").setAttribute("href", e.item.artists[0].external_urls.spotify);
-                    document.getElementById("player-album-link").setAttribute("href", e.item.album.external_urls.spotify);
-                    document.getElementById("player-mp3-link").setAttribute("href", e.item.preview_url);
-                    null == e.item.preview_url && document.getElementById("player-mp3-link").setAttribute("style", "display: none;");
                     progressSeconds = Math.ceil(songData.progress_ms / 1e3);
                     totalSeconds = Math.ceil(songData.item.duration_ms / 1e3);
                     songData.is_playing ? progressInterval = setInterval(setProgress, 1e3) : setProgress();
                     document.getElementById("player").clientWidth < 410 && (
-                        document.getElementById("player-song-link").style.display = "none",
-                        document.getElementById("player-artist-link").style.display = "none",
-                        document.getElementById("player-album-link").style.display = "none",
-                        document.getElementById("player-mp3-link").style.display = "none",
                         document.getElementById("player-time").style.display = "none"
                     );
                 });
@@ -153,7 +151,6 @@
             var e = pad(parseInt(totalSeconds / 60)) + ":" + pad(totalSeconds % 60),
                 t = pad(parseInt(progressSeconds / 60)) + ":" + pad(progressSeconds % 60);
             document.getElementById("player-time").innerHTML = t + " / " + e;
-            document.getElementById("player-progress").style.width = `${100 * progressSeconds / totalSeconds}%`;
         }
         function pad(e) {
             var t = e + "";
