@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: Helvetica, Arial;
+            font-family: inherit;
             padding: 20px;
         }
 
@@ -82,13 +83,20 @@
             text-align: center;
         }
 
-        #player-time {
+        .spotifyuser {
             position: absolute;
-            bottom: 5px;
-            left: 5px;
-            font-size: 1.1em;
+            bottom: 0px;
+            left: 20px;
+            font-size: .8em;
             color: #fff;
             z-index: 2;
+            letter-spacing: .2em;
+            background-color: rgba(0, 255, 255, 0.103);
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .spotifyuser i {
+            color: green;
         }
 
         @keyframes glowing {
@@ -107,15 +115,16 @@
 
         #player-status {
             animation: glowing 2s linear infinite;
+            font-size: 2em;
         }
-
-        .typewriter-text {
-            font-family: monospace;
-            font-size: 24px;
-            white-space: nowrap;
-            overflow: hidden;
+        .card-title {
+            color: rgb(255, 255, 255);
+            height: auto;
+            width: auto;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: rgba(30, 215, 96, 0.205);
         }
-
         @media screen and (max-width: 600px) {
             .card {
                 max-width: 300px;
@@ -133,12 +142,16 @@
 </head>
 
 <body>
+    
 
     <div class="container">
         <div class="card">
             <div class="cardimg">
                 <img id="player-album-art" src="https://via.placeholder.com/200" alt="Album Art">
-                <div id="player-time"></div>
+                <a href="https://open.spotify.com/user/21vwkb3tk46duwwy6jmanhkcy">
+                                       
+                    <p class="spotifyuser"><i class="fab fa-spotify">   </i>       BIMOARIFW</p>
+                </a>
             </div>
             <div class="card-body">
                 <div>
@@ -146,6 +159,7 @@
                 </div>
                 <h5 class="card-title" id="player-song">Song Title</h5>
                 <p class="card-text" id="player-artist">Artist Name</p>
+                <div id="player-time"></div>
             </div>
         </div>
     </div>
@@ -163,7 +177,7 @@
                     songData = e;
                     document.getElementById("player-song").innerHTML = e.item.name;
                     document.getElementById("player-artist").innerHTML = e.item.artists[0].name;
-                    document.getElementById("player-status").innerHTML = e.is_playing ? `▶️ ${spotifyUser}'s now playing...` : `⏸ ${spotifyUser} has paused.`;
+                    document.getElementById("player-status").innerHTML = e.is_playing ? `Now Playing` : `⏸ ${spotifyUser} has paused.`;
                     document.getElementById("player-album-art").setAttribute("src", e.item.album.images[1].url);
                     progressSeconds = Math.ceil(songData.progress_ms / 1e3);
                     totalSeconds = Math.ceil(songData.item.duration_ms / 1e3);
